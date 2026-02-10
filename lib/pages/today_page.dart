@@ -1,35 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todolist/data/database.dart';
-
 import 'package:todolist/util/diolog_box.dart';
 import 'package:todolist/util/todo_tile.dart';
 
-class HomePage extends StatefulWidget{ 
-  
+class TodayPage extends StatefulWidget {
 
-@override
-State<HomePage> createState() => _HomePageState();
+  @override 
+  State<TodayPage> createState() => _TodayPageState();
 }
 
-class _HomePageState extends State<HomePage>{
 
+class _TodayPageState extends State<TodayPage> {
 
-  final _myBox = Hive.box('myBox');
+ final _myBox = Hive.box('myBox');
   ToDoDatabase db = ToDoDatabase();
 
-  @override
-  void initState() {
-    //if this app opend firs ever
-    if(_myBox.get('TODOLIST') == null){
-      db.createInitialData();
-    }else {
-      //already exist data
-      db.loadData();
-    }
-    super.initState();
-  }
 
 //Text controller
   final _controller = TextEditingController();
@@ -37,7 +23,7 @@ class _HomePageState extends State<HomePage>{
 
   void checkBoxChange(bool? value, int index){
     setState(() {
-      db.toDoList[index][1] = value;
+      db.todaysToDoList[index][1] = value;
     });
     db.updateDataBase();
   }
@@ -45,7 +31,7 @@ class _HomePageState extends State<HomePage>{
 //save new task
 void saveNewTask(){
   setState(() {
-    db.toDoList.add(
+    db.todaysToDoList.add(
       [_controller.text, false]      
     );
     _controller.clear();
@@ -71,11 +57,10 @@ void saveNewTask(){
 //delete Task
   void deleteTask(int index ){
     setState(() {
-      db.toDoList.removeAt(index);
+      db.todaysToDoList.removeAt(index);
     });
     db.updateDataBase();
   }
-
 //send to todays page
   void sendToTodaysPage(index){
     setState(() {
@@ -94,17 +79,17 @@ void saveNewTask(){
       ),
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Text('To Do'),        
+        title: Text('ToDays To Do '),        
         centerTitle: true,
         elevation: 10,
       ),
       body:ListView.builder(
-          itemCount: db.toDoList.length,
+          itemCount: db.todaysToDoList.length,
           itemBuilder: (context, index) {
             return ToDoTile(
-              isTodaysPage: false,
-              taskName: db.toDoList[index][0],
-              taskCompleted: db.toDoList[index][1],
+              isTodaysPage: true,
+              taskName: db.todaysToDoList[index][0],
+              taskCompleted: db.todaysToDoList[index][1],
               onChanged: (value) => checkBoxChange(value, index),
               deleteFunction: (context) => deleteTask(index),
               sendToTodayFunction: (context) => sendToTodaysPage(index),

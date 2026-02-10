@@ -5,13 +5,17 @@ class ToDoTile extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
   Function(bool?)? onChanged;
+  bool isTodaysPage;
   void Function(BuildContext)? deleteFunction;
+  void Function(BuildContext)? sendToTodayFunction;
   ToDoTile({
     super.key, 
     required this.taskName, 
     required this.taskCompleted, 
     required this.onChanged,
     required this.deleteFunction,
+    required this.sendToTodayFunction,
+    required this.isTodaysPage,
     });
 
   @override
@@ -19,7 +23,15 @@ class ToDoTile extends StatelessWidget {
     
     return Padding(
       padding: EdgeInsets.only(left: 25,top: 25,right: 25),
-      child: Slidable(        
+      child: Slidable(    
+        startActionPane: !isTodaysPage? ActionPane(//Todayspage içinde çalışmamalı
+          motion: StretchMotion(), 
+          children: [SlidableAction(
+            borderRadius: BorderRadius.circular(12),
+            onPressed: sendToTodayFunction,
+            icon: Icons.travel_explore, // TODO: can be change
+            backgroundColor: Colors.amber )]
+          ):null,    
         endActionPane: ActionPane(
           motion: StretchMotion(),
           children: [SlidableAction(
