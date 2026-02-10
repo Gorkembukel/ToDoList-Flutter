@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todolist/data/database.dart';
+import 'package:todolist/pages/today_page.dart';
 
 import 'package:todolist/util/diolog_box.dart';
 import 'package:todolist/util/todo_tile.dart';
@@ -79,7 +80,7 @@ void saveNewTask(){
 //send to todays page
   void sendToTodaysPage(index){
     setState(() {
-      db.todaysToDoList.add(db.toDoList.remove(index));
+      db.todaysToDoList.add(db.toDoList.removeAt(index));
     });
     db.updateDataBase();
   }
@@ -93,6 +94,20 @@ void saveNewTask(){
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
+        actions: [
+          MaterialButton(onPressed: ( ) {
+
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                
+                builder: (context) =>  TodayPage(),//TODO: her seferinde yeniden yaratılacak doğrusu bulunmalı
+              ),
+            );
+          },
+
+          )
+        ],
         backgroundColor: Colors.teal,
         title: Text('To Do'),        
         centerTitle: true,

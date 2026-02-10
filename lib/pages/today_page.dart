@@ -16,6 +16,17 @@ class _TodayPageState extends State<TodayPage> {
  final _myBox = Hive.box('myBox');
   ToDoDatabase db = ToDoDatabase();
 
+  @override
+  void initState() {
+    //if this app opend firs ever
+    if(_myBox.get('TODAYSTODOLIST') == null){
+      db.createInitialData();
+    }else {
+      //already exist data
+      db.loadData();
+    }
+    super.initState();
+  }
 
 //Text controller
   final _controller = TextEditingController();

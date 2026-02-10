@@ -12,12 +12,14 @@ class ToDoDatabase{
     toDoList = [
       ['Give us 5 star',false]
     ];
-
+    todaysToDoList = [
+      ['Give us 5 star',false]
+    ];
   }
   //load data
   void loadData(){
     toDoList = _myBox.get('TODOLIST');
-    todaysToDoList = _myBox.get('TODAYSTODOLIST');
+    todaysToDoList = _myBox.get('TODAYSTODOLIST')?? [];
   }
 
   void updateDataBase(){
